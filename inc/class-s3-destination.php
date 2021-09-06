@@ -207,8 +207,8 @@ class BackWPup_S3_Destination
             'label' => __('Custom S3 destination', 'backwpup'),
             'endpoint' => BackWPup_Option::get($jobId, 's3base_url'),
             'region' => BackWPup_Option::get($jobId, 's3base_region'),
-            'multipart' => !empty(BackWPup_Option::get($jobId, 's3base_multipart')) ? true : false,
-            'only_path_style_bucket' => !empty(BackWPup_Option::get($jobId, 's3base_pathstylebucket')) ? true : false,
+            'multipart' => BackWPup_Option::get($jobId, 's3base_multipart'),
+            'only_path_style_bucket' => BackWPup_Option::get($jobId, 's3base_pathstylebucket'),
             'version' => BackWPup_Option::get($jobId, 's3base_version'),
             'signature' => BackWPup_Option::get($jobId, 's3base_signature'),
         ];

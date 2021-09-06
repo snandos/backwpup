@@ -20,7 +20,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
         return [
             's3base_url' => '',
             's3base_multipart' => true,
-            's3base_pathstyle' => false,
+            's3base_pathstylebucket' => false,
             's3base_version' => 'latest',
             's3base_signature' => 'v4',
             's3accesskey' => '',
@@ -129,13 +129,9 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
                                                 ) ?></span>
                                         </legend>
                                         <label for="s3base_multipart">
-                                            <input name="s3base_multipart" type="checkbox"
-                                                   checked="checked" value="<?= !empty(
-                                            BackWPup_Option::get(
-                                                $jobid,
-                                                's3base_multipart'
-                                            )
-                                            ) ? '1' : '' ?>">
+                                            <input name="s3base_multipart" type="checkbox" value="1"
+											<?php checked( BackWPup_Option::get( $jobid, 's3base_multipart' ), true ); ?>
+											>
                                             <?php esc_html_e(
                                                 'Destination supports multipart',
                                                 'backwpup'
@@ -158,13 +154,9 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
                                         </legend>
                                         <label
                                             for="s3base_pathstylebucket">
-                                            <input name="s3base_pathstylebucket" type="checkbox"
-                                                   value="<?= !empty(
-                                                   BackWPup_Option::get(
-                                                       $jobid,
-                                                       's3base_pathstylebucket'
-                                                   ) ? '1' : ''
-                                                   ) ?>">
+                                            <input name="s3base_pathstylebucket" type="checkbox" value="1"
+												   <?php checked( BackWPup_Option::get( $jobid, 's3base_pathstylebucket' ), true ); ?>
+												   >
                                             <?php esc_html_e(
                                                 'Destination provides only Pathstyle buckets',
                                                 'backwpup'
@@ -565,16 +557,16 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
             's3base_region',
             isset($_POST['s3base_region']) ? sanitize_text_field($_POST['s3base_region']) : ''
         );
+		BackWPup_Option::update(
+			$jobid,
+			's3base_multipart',
+			! empty( $_POST['s3base_multipart'] ) 
+		);
         BackWPup_Option::update(
-            $jobid,
-            's3base_multipart',
-            isset($_POST['s3base_multipart']) ? '1' : ''
-        );
-        BackWPup_Option::update(
-            $jobid,
-            's3base_pathstyle',
-            isset($_POST['s3base_pathstyle']) ? '1' : ''
-        );
+			$jobid,
+			's3base_pathstylebucket',
+			! empty( $_POST['s3base_pathstylebucket'] )
+		);
         BackWPup_Option::update(
             $jobid,
             's3base_version',
@@ -1114,7 +1106,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 						s3base_version      : $( 'input[name="s3base_version"]' ).val(),
 						s3base_signature      : $( 'input[name="s3base_signature"]' ).val(),
 						s3base_multipart      : $( 'input[name="s3base_multipart"]' ).is(':checked'),
-						s3base_pathstyle      : $( 'input[name="s3base_pathstyle"]' ).is(':checked'),
+						s3base_pathstylebucket      : $( 'input[name="s3base_pathstylebucket"]' ).is(':checked'),
 						_ajax_nonce     : $( '#backwpupajaxnonce' ).val()
 					};
 					$.post( ajaxurl, data, function ( response ) {
